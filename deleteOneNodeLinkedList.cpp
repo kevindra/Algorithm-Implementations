@@ -1,4 +1,14 @@
 /**
+  * File Name : deleteOneNodeLinkedList.cpp
+  *
+  * Purpose :
+  * Creation Date : 26-01-2011
+  *
+  * Last Modified : Wednesday 26 January 2011 12:32:47 PM IST
+  *
+  * Created By : Kevindra Singh <kevindra.singh@gmail.com>
+  */
+/**
   * @author kevindra
   *
   * Problem: Given only a pointer to a node to be deleted in a singly linked list,
