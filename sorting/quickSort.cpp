@@ -4,27 +4,13 @@
   * Purpose :
   * Creation Date : 01-02-2011
   *
-  * Last Modified : Tuesday 01 February 2011 10:47:45 PM IST
+  * Last Modified : Tuesday 01 February 2011 10:49:58 PM IST
   *
   * Created By : Kevindra Singh <kevindra.singh@gmail.com>
   */
 #include <iostream>
 
 using namespace std;
-
-/*int partition( int a[], int l, int r )  {
-  int pivot = a[r];
-  int i = l;
-
-  for( int j=l; j<r; j++ ) {
-    if( a[j] <= pivot ) i++;
-
-    swap(a[i], a[j]);
-  }
-  swap(a[i+1], a[r]);
-
-  return i+1;
-}*/
 
 int partition( int a[], int low, int high ) {
   int left, right;
