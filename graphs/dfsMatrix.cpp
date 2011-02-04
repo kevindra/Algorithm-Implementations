@@ -4,7 +4,7 @@
   * Purpose :
   * Creation Date : 03-02-2011
   *
-  * Last Modified : Thursday 03 February 2011 02:43:00 PM IST
+  * Last Modified : Thursday 03 February 2011 03:06:58 PM IST
   *
   * Created By : Kevindra Singh <kevindra.singh@gmail.com>
   */
@@ -54,7 +54,7 @@ void dfs(int **g, int n, int i)  {
   cout<<i<<" ";
 
   // iterate through all its neighbours
-  for(int p=0; p<n; p++)  if(!visited[p])
+  for(int p=0; p<n; p++)  if(g[i][p] != -1)
     dfs(g, n, p);
 }
 
