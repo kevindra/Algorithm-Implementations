@@ -4,7 +4,7 @@
   * Purpose :
   * Creation Date : 07-02-2011
   *
-  * Last Modified : Tuesday 08 February 2011 01:16:23 AM IST
+  * Last Modified : Tuesday 08 February 2011 07:26:06 PM IST
   *
   * Created By : Kevindra Singh <kevindra.singh@gmail.com>
   */
@@ -81,61 +81,92 @@ void inorder( node *rt )  {
   inorder(rt->right);
 }
 
+/** Pulls out the node having no children **/
+node *pullOutChildless(node *&rt, node *z) {
+  node *p = z->parent;
+  
+  if(p == NULL) rt  = NULL;
+  else if(p->left == z) p->left = NULL;
+  else p->right = NULL;
+
+  return z;
+}
+
+node *pullOutSingleChildParent(node *&rt, node *z) {
+  node *p = z->parent;
+  node *child = (z->left)?(z->left):(z->right);
+
+  if(p==NULL) {
+    rt  = child;
+    rt->parent = NULL;
+  }
+  else if(p->left == z) {
+    p->left = child;
+    child->parent = p;
+  }
+  else {
+    p->right  = child;
+    child->parent = p;
+  }
+
+  return z;
+}
+
+node *pullOutTwoChildParent(node *&rt, node *z) {
+  node *s = successor(z);
+  
+  // Successor can not have more than two children,   
+  // because if it has then it can't be a successor
+  // now, pullout successor
+  if( s->left == NULL && s->right == NULL )
+    s = pullOutChildless(rt, s);
+  else
+    s = pullOutSingleChildParent(rt, s);
+ 
+  node *p = z->parent;
+  if(p && p->right == z) p->right = s;
+  else if(p && p->left == z) p->left = s;
+  else rt = s;
+
+  s->left   = z->left;
+  s->right  = z->right;
+  s->parent = z->parent;
+  
+  if(s->left) s->left->parent = s;
+  if(s->right) s->right->parent = s;
+ 
+  return z;
+}
+
 void deleteNode( node *&rt, node *z ) {
   // if z has no children, then just remove it.
-  if( z->left == NULL && z->right == NULL ) {
-    node *p = z->parent;
-    if( p == NULL ) {}
-    else if(p->left == z) p->left = NULL;
-    else p->right = NULL;
-    delete z;
-    z = NULL;
+  if( z->left == NULL && z->right ==  NULL  ) {
+    node *p = pullOutChildless(rt, z);
+    delete p;
+    p = NULL;
   }
-  // if z has only one child, then just remove that node and connect it's child to it's parent.
   else if( z->left == NULL || z->right == NULL )  {
-    node *p = z->parent;
-    node *child = (z->left)?(z->left):(z->right);
-    
-    if( p == NULL ) rt  = child, child->parent = NULL;
-    else if( p->left  ==  z ) p->left = child, child->parent = p;
-    else p->right = child, child->parent = p;
-
-    delete z;
-    z = NULL;
+    node *p = pullOutSingleChildParent(rt, z);
+    delete p;
+    p = NULL;
   }
-  // if z has two children
   else {
-    // step 1: Pull out the successor of z.
-    node *sux = successor(z);
-
-    //To pull out, we gotta remove it from tree and yes it can not contain more than one children.
-    node *pSux  = sux->parent;
-    node *cSux  = (sux->left)?(sux->left):(sux->right);
-    
-    if(pSux == NULL)  rt  = cSux;
-    else if(pSux->left  ==  sux) pSux->left = cSux;
-    else pSux->right  = cSux;
-
-    // succesor pulled out successfully!! as 'sux'
-
-    // now, kick out 'z' and push in 'sux'.
-    sux->parent = z->parent;
-    sux->left = z->left;
-    sux->right  = z->right;
-    delete z;
-    z = NULL;
+    node *p = pullOutTwoChildParent(rt, z);
+    delete p;
+    p = NULL;
   }
 }
 
 int main()  {
   int a[] = {55, 32, 61, 25, 48, 46, 59, 65}, n = 8;
+  //int a[] = {5,4,6}, n = 3;
 
   for(int i=0; i<n; i++)  insert(root, newnode(a[i]));
  
   cout<<"Before Deletion: \n"; 
   inorder(root);
   
-  deleteNode(root, root->right);
+  deleteNode(root, root);
   
   cout<<"\nAfter Deletion: \n";
   inorder(root);
