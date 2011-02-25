@@ -1,0 +1,6 @@
+1.  0,1 matrix. set all the rows and columns by 1 if they contain atleast on 1.
+    if a[i][j] == 1 then a[i] = 1 and a[j] = 1
+
+2.  delete duplicate rows in a binary matrix.
+
+3.  search anagrams of a word in the list of words given. -- DONE location: "./strings/searchAnagrams.cpp"
